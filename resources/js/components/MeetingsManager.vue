@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         select(e){
-            e.preventDefault()
+           // e.preventDefault()
         },
     getMeetings(date) {
         var week= new Array(); 

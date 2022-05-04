@@ -5447,8 +5447,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    select: function select(e) {
-      e.preventDefault();
+    select: function select(e) {// e.preventDefault()
     },
     getMeetings: function getMeetings(date) {
       var _this = this;
