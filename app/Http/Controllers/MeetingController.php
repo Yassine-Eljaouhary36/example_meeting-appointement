@@ -35,13 +35,8 @@ class MeetingController extends Controller
      */
     public function store(Request $request)
     {
-        $newMeeting = new Meeting;
-        $newMeeting->FirstName="test";
-        $newMeeting->LastName="test";
-        $newMeeting->email="test";
-        $newMeeting->DateMeeting=$request->data["date"];
-        $newMeeting->save();
-        return $newMeeting;
+        dd($request->meeting);
+       
     }
 
     /**

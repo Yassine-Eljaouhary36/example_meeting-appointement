@@ -15,5 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [MeetingController::class,'index']);
-
+Route::post('/',[meetingController::class,'store'])->name('store');
  

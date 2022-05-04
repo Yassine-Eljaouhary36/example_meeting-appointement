@@ -1,13 +1,12 @@
 <template>
     <div id="app">
-        <div class="container mt-5">
-            <div class="alert " 
+        <!-- <div class="container mt-5"> -->
+            <!-- <div class="alert " 
             v-bind:class="{'alert-danger': hasError, 'alert-success': !hasError }"
             role="alert" v-if="message">
                 <strong>{{message}}</strong>
-            </div>
-            <div class="card">
-                <div class="card-body p-5">
+            </div> -->
+            
                     <vue-meeting-selector
                         class="simple-example__meeting-selector"
                         v-model="meeting"
@@ -18,18 +17,15 @@
                         v-if="meetingsDays"
                         @next-date="nextDate"
                         @previous-date="previousDate"
-                        @disabledDate='reservedDate'
+                        @change="select"
                     />
-                    <div class="d-grid gap-1 col-6 mx-auto mt-4">
-                        <button @click="submit" type="button" class="btn btn-outline-dark" >
-                            <strong>submit</strong>
-                        </button>
-                    </div>
-                </div>
+                    <input type="hidden" name="meeting" :value="meeting.date">
                 <p>meeting Selected: {{ meeting ? meeting : 'No Meeting selected' }}</p>
-            </div>
+                
+
+            <!-- </div> -->
              
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
@@ -61,6 +57,9 @@ export default {
         };
     },
     methods: {
+        select(e){
+            e.preventDefault()
+        },
     getMeetings(date) {
         var week= new Array(); 
         date.setDate(date.getDate() );
@@ -121,28 +120,28 @@ export default {
         this.date = date;
         this.loading = false;
     },
-    submit(){
-        if(this.meeting.date == ""){
-            this.message = "No Date Selected"
-            this.hasError=true
-            return;
-        }
-        axios.post('api/',{
-                data:this.meeting
-            })
-            .then(response=>{
-                if(response.status == 201){
-                    this.message ="Stored Successfuly"
-                    this.hasError=false
-                }
-                this.mounted
-            })
-            .catch(error=>{
-                this.message = error
-                this.hasError=true
-            })
+    // submit(){
+    //     if(this.meeting.date == ""){
+    //         this.message = "No Date Selected"
+    //         this.hasError=true
+    //         return;
+    //     }
+    //     axios.post('api/',{
+    //             data:this.meeting
+    //         })
+    //         .then(response=>{
+    //             if(response.status == 201){
+    //                 this.message ="Stored Successfuly"
+    //                 this.hasError=false
+    //             }
+    //             this.mounted
+    //         })
+    //         .catch(error=>{
+    //             this.message = error
+    //             this.hasError=true
+    //         })
             
-    },
+    // },
   },
   mounted(){
 console.log(this.meetingsDays);

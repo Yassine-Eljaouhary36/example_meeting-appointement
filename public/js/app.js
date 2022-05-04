@@ -5420,10 +5420,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
@@ -5451,6 +5447,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    select: function select(e) {
+      e.preventDefault();
+    },
     getMeetings: function getMeetings(date) {
       var _this = this;
 
@@ -5553,50 +5552,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
-    },
-    submit: function submit() {
-      var _this4 = this;
+    } // submit(){
+    //     if(this.meeting.date == ""){
+    //         this.message = "No Date Selected"
+    //         this.hasError=true
+    //         return;
+    //     }
+    //     axios.post('api/',{
+    //             data:this.meeting
+    //         })
+    //         .then(response=>{
+    //             if(response.status == 201){
+    //                 this.message ="Stored Successfuly"
+    //                 this.hasError=false
+    //             }
+    //             this.mounted
+    //         })
+    //         .catch(error=>{
+    //             this.message = error
+    //             this.hasError=true
+    //         })
+    // },
 
-      if (this.meeting.date == "") {
-        this.message = "No Date Selected";
-        this.hasError = true;
-        return;
-      }
-
-      axios.post('api/', {
-        data: this.meeting
-      }).then(function (response) {
-        if (response.status == 201) {
-          _this4.message = "Stored Successfuly";
-          _this4.hasError = false;
-        }
-
-        _this4.mounted;
-      })["catch"](function (error) {
-        _this4.message = error;
-        _this4.hasError = true;
-      });
-    }
   },
   mounted: function mounted() {
     console.log(this.meetingsDays);
     console.log(this.meetings);
   },
   created: function created() {
-    var _this5 = this;
+    var _this4 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _this5.loading = true;
+              _this4.loading = true;
               _context3.next = 3;
-              return _this5.getMeetings(_this5.date);
+              return _this4.getMeetings(_this4.date);
 
             case 3:
-              _this5.meetingsDays = _context3.sent;
-              _this5.loading = false;
+              _this4.meetingsDays = _context3.sent;
+              _this4.loading = false;
 
             case 5:
             case "end":
@@ -28981,76 +28978,48 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "app" } }, [
-    _c("div", { staticClass: "container mt-5" }, [
-      _vm.message
-        ? _c(
-            "div",
-            {
-              staticClass: "alert ",
-              class: {
-                "alert-danger": _vm.hasError,
-                "alert-success": !_vm.hasError,
-              },
-              attrs: { role: "alert" },
+  return _c(
+    "div",
+    { attrs: { id: "app" } },
+    [
+      _vm.meetingsDays
+        ? _c("vue-meeting-selector", {
+            staticClass: "simple-example__meeting-selector",
+            attrs: {
+              date: _vm.date,
+              loading: _vm.loading,
+              "class-names": _vm.classNames,
+              "meetings-days": _vm.meetingsDays,
             },
-            [_c("strong", [_vm._v(_vm._s(_vm.message))])]
-          )
+            on: {
+              "next-date": _vm.nextDate,
+              "previous-date": _vm.previousDate,
+              change: _vm.select,
+            },
+            model: {
+              value: _vm.meeting,
+              callback: function ($$v) {
+                _vm.meeting = $$v
+              },
+              expression: "meeting",
+            },
+          })
         : _vm._e(),
       _vm._v(" "),
-      _c("div", { staticClass: "card" }, [
-        _c(
-          "div",
-          { staticClass: "card-body p-5" },
-          [
-            _vm.meetingsDays
-              ? _c("vue-meeting-selector", {
-                  staticClass: "simple-example__meeting-selector",
-                  attrs: {
-                    date: _vm.date,
-                    loading: _vm.loading,
-                    "class-names": _vm.classNames,
-                    "meetings-days": _vm.meetingsDays,
-                  },
-                  on: {
-                    "next-date": _vm.nextDate,
-                    "previous-date": _vm.previousDate,
-                    disabledDate: _vm.reservedDate,
-                  },
-                  model: {
-                    value: _vm.meeting,
-                    callback: function ($$v) {
-                      _vm.meeting = $$v
-                    },
-                    expression: "meeting",
-                  },
-                })
-              : _vm._e(),
-            _vm._v(" "),
-            _c("div", { staticClass: "d-grid gap-1 col-6 mx-auto mt-4" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-outline-dark",
-                  attrs: { type: "button" },
-                  on: { click: _vm.submit },
-                },
-                [_c("strong", [_vm._v("submit")])]
-              ),
-            ]),
-          ],
-          1
+      _c("input", {
+        attrs: { type: "hidden", name: "meeting" },
+        domProps: { value: _vm.meeting.date },
+      }),
+      _vm._v(" "),
+      _c("p", [
+        _vm._v(
+          "meeting Selected: " +
+            _vm._s(_vm.meeting ? _vm.meeting : "No Meeting selected")
         ),
-        _vm._v(" "),
-        _c("p", [
-          _vm._v(
-            "meeting Selected: " +
-              _vm._s(_vm.meeting ? _vm.meeting : "No Meeting selected")
-          ),
-        ]),
       ]),
-    ]),
-  ])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
