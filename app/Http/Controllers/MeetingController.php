@@ -17,11 +17,6 @@ class MeetingController extends Controller
        $meetings =  Meeting::get();
         return view('meetings',compact('meetings'));
     }
-    public function data()
-    {
-       $meetings =  Meeting::get();
-        return json_encode($meetings);
-    }
     /**
      * Show the form for creating a new resource.
      *

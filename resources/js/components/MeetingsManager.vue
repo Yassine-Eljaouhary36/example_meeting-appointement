@@ -58,22 +58,10 @@ export default {
             loading: true,
             message :null,
             hasError:null,
-            isReserved:[]
         };
     },
     methods: {
-    reservedDate(){
-        axios('api/data') 
-           .then(response=>{
-               this.isReserved = response.data
-               console.log(this.isReserved)
-           })
-           .catch(error=>{
-               console.log(error)
-           })
-    },
     getMeetings(date) {
-        this.reservedDate()
         var week= new Array(); 
         date.setDate(date.getDate() );
         for (var i = 0; i < 7; i++) {
@@ -157,9 +145,8 @@ export default {
     },
   },
   mounted(){
-// console.log(this.meetingsDays);
-this.reservedDate()
-//  console.log(this.meetings);
+console.log(this.meetingsDays);
+ console.log(this.meetings);
   },
   async created() {
     this.loading = true;

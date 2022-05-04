@@ -19,4 +19,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/',[meetingController::class,'store']);
-Route::get('/data',[meetingController::class,'data']);

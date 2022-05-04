@@ -5447,25 +5447,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       meeting: {},
       loading: true,
       message: null,
-      hasError: null,
-      isReserved: []
+      hasError: null
     };
   },
   methods: {
-    reservedDate: function reservedDate() {
+    getMeetings: function getMeetings(date) {
       var _this = this;
 
-      axios('api/data').then(function (response) {
-        _this.isReserved = response.data;
-        console.log(_this.isReserved);
-      })["catch"](function (error) {
-        console.log(error);
-      });
-    },
-    getMeetings: function getMeetings(date) {
-      var _this2 = this;
-
-      this.reservedDate();
       var week = new Array();
       date.setDate(date.getDate());
 
@@ -5495,7 +5483,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       week.forEach(function (element) {
         element.slots.forEach(function (event) {
-          _this2.meetings.forEach(function (item) {
+          _this.meetings.forEach(function (item) {
             var d1 = new Date(event.date);
             var d2 = new Date(item.DateMeeting);
 
@@ -5510,7 +5498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // don't know what to do here <-------------------------
     nextDate: function nextDate() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         var date;
@@ -5518,16 +5506,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _this3.loading = true;
-                date = new Date(_this3.date);
+                _this2.loading = true;
+                date = new Date(_this2.date);
                 date.setDate(date.getDate());
                 _context.next = 5;
-                return _this3.getMeetings(date);
+                return _this2.getMeetings(date);
 
               case 5:
-                _this3.meetingsDays = _context.sent;
-                _this3.date = date;
-                _this3.loading = false;
+                _this2.meetingsDays = _context.sent;
+                _this2.date = date;
+                _this2.loading = false;
 
               case 8:
               case "end":
@@ -5539,7 +5527,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     // don't know what to do here <-------------------------
     previousDate: function previousDate() {
-      var _this4 = this;
+      var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         var date;
@@ -5547,16 +5535,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this4.loading = true;
-                date = new Date(_this4.date);
+                _this3.loading = true;
+                date = new Date(_this3.date);
                 date.setDate(date.getDate() - 14);
                 _context2.next = 5;
-                return _this4.getMeetings(date);
+                return _this3.getMeetings(date);
 
               case 5:
-                _this4.meetingsDays = _context2.sent;
-                _this4.date = date;
-                _this4.loading = false;
+                _this3.meetingsDays = _context2.sent;
+                _this3.date = date;
+                _this3.loading = false;
 
               case 8:
               case "end":
@@ -5567,7 +5555,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     submit: function submit() {
-      var _this5 = this;
+      var _this4 = this;
 
       if (this.meeting.date == "") {
         this.message = "No Date Selected";
@@ -5579,36 +5567,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         data: this.meeting
       }).then(function (response) {
         if (response.status == 201) {
-          _this5.message = "Stored Successfuly";
-          _this5.hasError = false;
+          _this4.message = "Stored Successfuly";
+          _this4.hasError = false;
         }
 
-        _this5.mounted;
+        _this4.mounted;
       })["catch"](function (error) {
-        _this5.message = error;
-        _this5.hasError = true;
+        _this4.message = error;
+        _this4.hasError = true;
       });
     }
   },
   mounted: function mounted() {
-    // console.log(this.meetingsDays);
-    this.reservedDate(); //  console.log(this.meetings);
+    console.log(this.meetingsDays);
+    console.log(this.meetings);
   },
   created: function created() {
-    var _this6 = this;
+    var _this5 = this;
 
     return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              _this6.loading = true;
+              _this5.loading = true;
               _context3.next = 3;
-              return _this6.getMeetings(_this6.date);
+              return _this5.getMeetings(_this5.date);
 
             case 3:
-              _this6.meetingsDays = _context3.sent;
-              _this6.loading = false;
+              _this5.meetingsDays = _context3.sent;
+              _this5.loading = false;
 
             case 5:
             case "end":
