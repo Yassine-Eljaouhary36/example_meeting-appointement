@@ -36,12 +36,15 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'meeting' => 'required'
+            'FirstName' => 'required|max:255',
+            'LastName' => 'required|max:255',
+            'email' => 'required|max:255|email',
+            'meeting' => 'required',
         ]);
         $newMeeting = new Meeting;
-        $newMeeting->FirstName="test";
-        $newMeeting->LastName="test";
-        $newMeeting->email="test";
+        $newMeeting->FirstName=$request->FirstName;
+        $newMeeting->LastName=$request->LastName;
+        $newMeeting->email=$request->email;
         $newMeeting->DateMeeting=$request->meeting;
         $newMeeting->save();
     
