@@ -1,31 +1,18 @@
 <template>
     <div id="app">
-        <!-- <div class="container mt-5"> -->
-            <!-- <div class="alert " 
-            v-bind:class="{'alert-danger': hasError, 'alert-success': !hasError }"
-            role="alert" v-if="message">
-                <strong>{{message}}</strong>
-            </div> -->
-            
-                    <vue-meeting-selector
-                        class="simple-example__meeting-selector"
-                        v-model="meeting"
-                        :date="date"
-                        :loading="loading"
-                        :class-names="classNames"
-                        :meetings-days="meetingsDays"
-                        v-if="meetingsDays"
-                        @next-date="nextDate"
-                        @previous-date="previousDate"
-                        @change="select"
-                    />
-                    <input type="hidden" name="meeting" :value="meeting.date">
-                <p>meeting Selected: {{ meeting ? meeting : 'No Meeting selected' }}</p>
-                
-
-            <!-- </div> -->
-             
-        <!-- </div> -->
+        <vue-meeting-selector
+            class="simple-example__meeting-selector"
+            v-model="meeting"
+            :date="date"
+            :loading="loading"
+            :class-names="classNames"
+            :meetings-days="meetingsDays"
+            v-if="meetingsDays"
+            @next-date="nextDate"
+            @previous-date="previousDate"
+            @change="select"
+        />
+        <input type="hidden" name="meeting" :value="meeting.date">
     </div>
 </template>
 
@@ -52,14 +39,9 @@ export default {
             meetingsDays: [],
             meeting: {},
             loading: true,
-            message :null,
-            hasError:null,
         };
     },
     methods: {
-        select(e){
-           // e.preventDefault()
-        },
     getMeetings(date) {
         var week= new Array(); 
         date.setDate(date.getDate() );
@@ -90,14 +72,23 @@ export default {
 
         week.forEach(element => {
             element.slots.forEach(event => {
+                var d1 = new Date(event.date);
+                var d3 = new Date()
+                d3.setHours(8);
+                d3.setMinutes(0);
+                d3.setSeconds(0);
+                d3.setMilliseconds(0);
                 this.meetings.forEach(item=>{
-                    var d1 = new Date(event.date);
                     var d2 = new Date(item.DateMeeting);
                     if(d1.getTime() === d2.getTime()){
                         event.date = ""
                         event.status = ""
                     }
                 })
+                if( d1.getTime()<d3.getTime()){
+                    event.date = ""
+                    event.status = ""
+                }
             })
         });
         return week;
@@ -120,28 +111,6 @@ export default {
         this.date = date;
         this.loading = false;
     },
-    // submit(){
-    //     if(this.meeting.date == ""){
-    //         this.message = "No Date Selected"
-    //         this.hasError=true
-    //         return;
-    //     }
-    //     axios.post('api/',{
-    //             data:this.meeting
-    //         })
-    //         .then(response=>{
-    //             if(response.status == 201){
-    //                 this.message ="Stored Successfuly"
-    //                 this.hasError=false
-    //             }
-    //             this.mounted
-    //         })
-    //         .catch(error=>{
-    //             this.message = error
-    //             this.hasError=true
-    //         })
-            
-    // },
   },
   mounted(){
 console.log(this.meetingsDays);

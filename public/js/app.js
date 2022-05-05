@@ -5407,19 +5407,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
@@ -5441,14 +5428,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       date: new Date(),
       meetingsDays: [],
       meeting: {},
-      loading: true,
-      message: null,
-      hasError: null
+      loading: true
     };
   },
   methods: {
-    select: function select(e) {// e.preventDefault()
-    },
     getMeetings: function getMeetings(date) {
       var _this = this;
 
@@ -5481,8 +5464,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       week.forEach(function (element) {
         element.slots.forEach(function (event) {
+          var d1 = new Date(event.date);
+          var d3 = new Date();
+          d3.setHours(8);
+          d3.setMinutes(0);
+          d3.setSeconds(0);
+          d3.setMilliseconds(0);
+
           _this.meetings.forEach(function (item) {
-            var d1 = new Date(event.date);
             var d2 = new Date(item.DateMeeting);
 
             if (d1.getTime() === d2.getTime()) {
@@ -5490,6 +5479,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               event.status = "";
             }
           });
+
+          if (d1.getTime() < d3.getTime()) {
+            event.date = "";
+            event.status = "";
+          }
         });
       });
       return week;
@@ -5551,28 +5545,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
-    } // submit(){
-    //     if(this.meeting.date == ""){
-    //         this.message = "No Date Selected"
-    //         this.hasError=true
-    //         return;
-    //     }
-    //     axios.post('api/',{
-    //             data:this.meeting
-    //         })
-    //         .then(response=>{
-    //             if(response.status == 201){
-    //                 this.message ="Stored Successfuly"
-    //                 this.hasError=false
-    //             }
-    //             this.mounted
-    //         })
-    //         .catch(error=>{
-    //             this.message = error
-    //             this.hasError=true
-    //         })
-    // },
-
+    }
   },
   mounted: function mounted() {
     console.log(this.meetingsDays);
@@ -29009,13 +28982,6 @@ var render = function () {
         attrs: { type: "hidden", name: "meeting" },
         domProps: { value: _vm.meeting.date },
       }),
-      _vm._v(" "),
-      _c("p", [
-        _vm._v(
-          "meeting Selected: " +
-            _vm._s(_vm.meeting ? _vm.meeting : "No Meeting selected")
-        ),
-      ]),
     ],
     1
   )

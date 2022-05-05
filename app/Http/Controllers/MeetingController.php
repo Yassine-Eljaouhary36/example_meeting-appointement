@@ -35,8 +35,17 @@ class MeetingController extends Controller
      */
     public function store(Request $request)
     {
-        return $request->meeting;
-       
+        $this->validate($request,[
+            'meeting' => 'required'
+        ]);
+        $newMeeting = new Meeting;
+        $newMeeting->FirstName="test";
+        $newMeeting->LastName="test";
+        $newMeeting->email="test";
+        $newMeeting->DateMeeting=$request->meeting;
+        $newMeeting->save();
+    
+        return back()->with('success','Item created successfully!');
     }
 
     /**

@@ -1,6 +1,16 @@
 @extends('layouts.app')
 @section('content')
 <div class="container mt-5">
+   @if ($message = Session::get('success'))
+   <div class="alert alert-success alert-block">	
+         <strong>{{ $message }}</strong>
+   </div>
+   @endif
+   @if ($errors->any())
+   <div class="alert alert-danger">	
+      Please check the form below for errors
+   </div>
+   @endif
    <div class="card">
       <div class="card-body p-5">
          <form action="{{route('store')}}" method="post" onsubmit="event.preventDefault();">
