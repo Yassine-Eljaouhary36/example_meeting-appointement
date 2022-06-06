@@ -14,7 +14,7 @@
    </div>
    @endif
    <div class="card">
-      <div class="card-body p-5">
+      <div class="card-body p-4">
          <form action="{{route('store')}}" method="post" onsubmit="event.preventDefault();">
             @csrf
             <div class="row align-items-center mb-4">
@@ -33,7 +33,7 @@
             </div>
             
             <meetings-manager :meetings="{{json_encode($meetings)}}"></meetings-manager>
-            <div class="d-grid gap-1 col-6 mx-auto mt-4">
+            <div class="d-grid gap-1 col-6 mx-auto mt-2">
                <button type="submit" class="btn btn-outline-dark" onclick="submit()">
                   <strong>submit</strong>
                </button>

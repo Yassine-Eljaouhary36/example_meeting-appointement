@@ -1,35 +1,46 @@
 <template>
     <div id="app">
-        <vue-meeting-selector
-            class="simple-example__meeting-selector"
-            v-model="meeting"
-            :date="date"
-            :loading="loading"
-            :class-names="classNames"
-            :meetings-days="meetingsDays"
-            v-if="meetingsDays"
-            @next-date="nextDate"
-            @previous-date="previousDate"
-            @change="select"
-        />
+        <div class="d-flex py-2" style="justify-content:space-between ;">
+            <button type="button" class="btn btn-outline-primary px-5"
+            @click="previousDate"
+            > <i class="fa-solid fa-angle-left" style="font-size:20px;font-weight:bold ;"></i></button>
+            <button type="button" class="btn btn-outline-primary px-5"
+            @click="nextDate"
+            > <i class="fa-solid fa-angle-right" style="font-size:20px;font-weight:bold ;"></i></button>
+        </div>
+        <div class="d-flex py-3" style="justify-content:center;">
+            <div class="d-flex mostly-customized-scrollbar" style="max-height:50vh ;overflow-y:auto ; overflow-x: auto;">
+                <div class="d-flex mx-3" style="flex-direction: column; min-width:120px;" v-for="item in meetingsDays" :key="item.id">
+                    <div class="py-1">
+                        <div class="d-flex" style="flex-direction:column ; align-items:center ;">
+                            <h5 style="font-weight:900;">
+                                {{formatDateDay(item.date)}}
+                            </h5>
+                            <span class="py-1">
+                                {{formatDateMonth(item.date)}}
+                            </span>
+                        </div>
+                    </div>
+                    <button class="mb-3 btn" v-for="ele in item.slots" :key="ele.date" 
+                        :style="!ele.status ? 'cursor: not-allowed;' : 'cursor: pointer;' "
+                        :class="{
+                        'btn-primary': ele.status,
+                        'btn-danger': !ele.status,
+                        }"
+                        @click="selectDate(ele)"
+                        >
+                        {{ formatTime(ele.date) }}
+                    </button>
+                </div>
+            </div>
+        </div>
         <input type="hidden" name="meeting" :value="meeting.date">
     </div>
 </template>
 
 <script>
-import VueMeetingSelector from "vue-meeting-selector";
 export default {
   name: "App",
-    components: {
-        VueMeetingSelector,
-    },
-    computed: {
-        classNames() {
-        return {
-            tabMeeting: 'tabMeetingStyle',
-        };
-        },
-    },
     props: {
         meetings:Array,
     },
@@ -38,7 +49,6 @@ export default {
             date: new Date(),
             meetingsDays: [],
             meeting: {},
-            loading: true,
         };
     },
     methods: {
@@ -64,7 +74,7 @@ export default {
             for (let index = 0; index < 10; index++) {
                 element.slots.push({
                     "date":  Datetime,
-                    "status":index % 2 == 0 ? true : false
+                    "status":true 
                 })
                 Datetime = new Date(Datetime.getTime() + minutesToAdd*60*1000)
             }
@@ -81,13 +91,13 @@ export default {
                 this.meetings.forEach(item=>{
                     var d2 = new Date(item.DateMeeting);
                     if(d1.getTime() === d2.getTime()){
-                        event.date = ""
-                        event.status = ""
+                        // event.date = ""
+                        event.status = false
                     }
                 })
                 if( d1.getTime()<d3.getTime()){
-                    event.date = ""
-                    event.status = ""
+                    // event.date = ""
+                    event.status = false
                 }
             })
         });
@@ -111,10 +121,30 @@ export default {
         this.date = date;
         this.loading = false;
     },
-  },
-  mounted(){
-console.log(this.meetingsDays);
- console.log(this.meetings);
+    formatTime(DateTime){
+        var min = DateTime.getMinutes();
+        if (min < 10) {
+            min = "0" + min;
+        }
+        return DateTime.getHours()+ ":" + min
+    },
+    formatDateMonth(date){
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var d = new Date(date);
+        return d.getDate()+" "+months[d.getMonth()];
+    },
+    formatDateDay(date){
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        var d = new Date(date);
+        return days[d.getDay()];
+    },
+    selectDate(data){
+        if(data.status){
+            this.meeting =data   
+        }else{
+            this.meeting ={} 
+        }
+    }
   },
   async created() {
     this.loading = true;
@@ -126,5 +156,14 @@ console.log(this.meetingsDays);
 </script>
 
 <style>
-
+.mostly-customized-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  border-radius: 2em;
+  background-color: #aaa;
+}
+.mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(0, 146, 231);
+    border-radius: 2em;
+}
 </style>
