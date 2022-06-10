@@ -189,6 +189,9 @@ export default {
         if(date.getTime()>=d3.getTime()){
             this.meetingsDays = await this.getMeetings(date);
             this.date = date;    
+        }else{
+            this.meetingsDays = await this.getMeetings(new Date());
+            this.date = new Date();  
         }
     },
     formatTime(DateTime){

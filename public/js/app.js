@@ -5618,7 +5618,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 date.setDate(date.getDate() - _this4.displayValue.previousValue);
 
                 if (!(date.getTime() >= d3.getTime())) {
-                  _context3.next = 12;
+                  _context3.next = 14;
                   break;
                 }
 
@@ -5628,8 +5628,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 10:
                 _this4.meetingsDays = _context3.sent;
                 _this4.date = date;
+                _context3.next = 18;
+                break;
 
-              case 12:
+              case 14:
+                _context3.next = 16;
+                return _this4.getMeetings(new Date());
+
+              case 16:
+                _this4.meetingsDays = _context3.sent;
+                _this4.date = new Date();
+
+              case 18:
               case "end":
                 return _context3.stop();
             }
