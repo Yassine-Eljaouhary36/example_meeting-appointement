@@ -5416,26 +5416,110 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "App",
   props: {
-    meetings: Array
+    meetings: Array,
+    hours: String,
+    minutes: String
   },
   data: function data() {
     return {
       date: new Date(),
       meetingsDays: [],
-      meeting: {}
+      meeting: {},
+      displayValue: {
+        display: true,
+        loopValue: 1,
+        previousValue: 2
+      }
     };
   },
   methods: {
-    getMeetings: function getMeetings(date) {
+    verifyDate: function verifyDate() {
+      return false;
+    },
+    setDisplayValue: function setDisplayValue(value) {
       var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (value) {
+                  _this.displayValue = {
+                    display: true,
+                    loopValue: 1,
+                    previousValue: 2
+                  };
+                } else {
+                  _this.displayValue = {
+                    display: false,
+                    loopValue: 7,
+                    previousValue: 14
+                  };
+                }
+
+                _context.next = 3;
+                return _this.getMeetings(_this.date);
+
+              case 3:
+                _this.meetingsDays = _context.sent;
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    getMeetings: function getMeetings(date) {
+      var _this2 = this;
 
       var week = new Array();
       date.setDate(date.getDate());
 
-      for (var i = 0; i < 7; i++) {
+      for (var i = 0; i < this.displayValue.loopValue; i++) {
         week.push({
           "date": new Date(date).toJSON(),
           "slots": []
@@ -5450,13 +5534,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         Datetime.setSeconds(0);
         Datetime.setMilliseconds(0);
         var minutesToAdd = 60;
+        var dTime = new Date();
+        dTime.setHours(_this2.hours);
+        dTime.setMinutes(_this2.minutes);
 
-        for (var _index = 0; _index < 10; _index++) {
+        if (_this2.hours <= 23 && _this2.minutes < 59) {
+          var CounterTime = (dTime.getHours() - 8) * 60 / 30 + parseInt(dTime.getMinutes() / 30) + 1;
+        } else {
+          var CounterTime = 0;
+        }
+
+        for (var _index = 0; _index < CounterTime; _index++) {
           element.slots.push({
             "date": Datetime,
             "status": true
           });
-          Datetime = new Date(Datetime.getTime() + minutesToAdd * 60 * 1000);
+          Datetime = new Date(Datetime.getTime() + minutesToAdd * 30 * 1000);
         }
       });
       week.forEach(function (element) {
@@ -5468,54 +5561,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           d3.setSeconds(0);
           d3.setMilliseconds(0);
 
-          _this.meetings.forEach(function (item) {
+          _this2.meetings.forEach(function (item) {
             var d2 = new Date(item.DateMeeting);
 
             if (d1.getTime() === d2.getTime()) {
-              // event.date = ""
               event.status = false;
             }
           });
-
-          if (d1.getTime() < d3.getTime()) {
-            // event.date = ""
-            event.status = false;
-          }
         });
       });
       return week;
     },
     // don't know what to do here <-------------------------
     nextDate: function nextDate() {
-      var _this2 = this;
-
-      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        var date;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _this2.loading = true;
-                date = new Date(_this2.date);
-                date.setDate(date.getDate());
-                _context.next = 5;
-                return _this2.getMeetings(date);
-
-              case 5:
-                _this2.meetingsDays = _context.sent;
-                _this2.date = date;
-                _this2.loading = false;
-
-              case 8:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee);
-      }))();
-    },
-    // don't know what to do here <-------------------------
-    previousDate: function previousDate() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -5524,23 +5582,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _this3.loading = true;
                 date = new Date(_this3.date);
-                date.setDate(date.getDate() - 14);
-                _context2.next = 5;
+                date.setDate(date.getDate());
+                _context2.next = 4;
                 return _this3.getMeetings(date);
 
-              case 5:
+              case 4:
                 _this3.meetingsDays = _context2.sent;
                 _this3.date = date;
-                _this3.loading = false;
 
-              case 8:
+              case 6:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
+      }))();
+    },
+    // don't know what to do here <-------------------------
+    previousDate: function previousDate() {
+      var _this4 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+        var date, d3;
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                date = new Date(_this4.date);
+                d3 = new Date();
+                d3.setHours(date.getHours());
+                d3.setMinutes(date.getMinutes());
+                d3.setSeconds(date.getSeconds());
+                d3.setMilliseconds(date.getMilliseconds());
+                date.setDate(date.getDate() - _this4.displayValue.previousValue);
+
+                if (!(date.getTime() >= d3.getTime())) {
+                  _context3.next = 12;
+                  break;
+                }
+
+                _context3.next = 10;
+                return _this4.getMeetings(date);
+
+              case 10:
+                _this4.meetingsDays = _context3.sent;
+                _this4.date = date;
+
+              case 12:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
       }))();
     },
     formatTime: function formatTime(DateTime) {
@@ -5571,27 +5665,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
-    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-      return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+    return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+      return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              _this4.loading = true;
-              _context3.next = 3;
-              return _this4.getMeetings(_this4.date);
+              _context4.next = 2;
+              return _this5.getMeetings(_this5.date);
+
+            case 2:
+              _this5.meetingsDays = _context4.sent;
 
             case 3:
-              _this4.meetingsDays = _context3.sent;
-              _this4.loading = false;
-
-            case 5:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
-      }, _callee3);
+      }, _callee4);
     }))();
   }
 });
@@ -28640,7 +28732,7 @@ var render = function () {
         _c(
           "button",
           {
-            staticClass: "btn btn-outline-primary px-5",
+            staticClass: "btn btn-dark px-4",
             attrs: { type: "button" },
             on: { click: _vm.previousDate },
           },
@@ -28652,10 +28744,54 @@ var render = function () {
           ]
         ),
         _vm._v(" "),
+        _c("div", { staticClass: "d-flex" }, [
+          _c("div", { staticClass: "d-flex" }, [
+            _c(
+              "div",
+              {
+                staticClass: "d-flex mx-1 ",
+                staticStyle: { "align-items": "center" },
+              },
+              [
+                _c("div", { staticClass: "px-2 " }, [_vm._v("Day")]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "radio", name: "displayValue" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.setDisplayValue(true)
+                    },
+                  },
+                }),
+              ]
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "d-flex mx-1 ",
+                staticStyle: { "align-items": "center" },
+              },
+              [
+                _c("div", { staticClass: "px-2 " }, [_vm._v("Week")]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "radio", name: "displayValue" },
+                  on: {
+                    click: function ($event) {
+                      return _vm.setDisplayValue(false)
+                    },
+                  },
+                }),
+              ]
+            ),
+          ]),
+        ]),
+        _vm._v(" "),
         _c(
           "button",
           {
-            staticClass: "btn btn-outline-primary px-5",
+            staticClass: "btn btn-dark px-4",
             attrs: { type: "button" },
             on: { click: _vm.nextDate },
           },
@@ -28669,22 +28805,110 @@ var render = function () {
       ]
     ),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "d-flex py-3",
-        staticStyle: { "justify-content": "center" },
-      },
-      [
-        _c(
+    !this.displayValue.display
+      ? _c(
           "div",
           {
-            staticClass: "d-flex mostly-customized-scrollbar",
-            staticStyle: {
-              "max-height": "50vh",
-              "overflow-y": "auto",
-              "overflow-x": "auto",
-            },
+            staticClass: "d-flex py-3",
+            staticStyle: { "justify-content": "center" },
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "d-flex mostly-customized-scrollbar",
+                staticStyle: {
+                  "max-height": "50vh",
+                  "overflow-y": "auto",
+                  "overflow-x": "auto",
+                },
+              },
+              _vm._l(_vm.meetingsDays, function (item) {
+                return _c(
+                  "div",
+                  {
+                    key: item.id,
+                    staticClass: "d-flex mx-3",
+                    staticStyle: {
+                      "flex-direction": "column",
+                      "min-width": "120px",
+                    },
+                  },
+                  [
+                    _c("div", { staticClass: "py-1" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "d-flex",
+                          staticStyle: {
+                            "flex-direction": "column",
+                            "align-items": "center",
+                          },
+                        },
+                        [
+                          _c("h5", { staticStyle: { "font-weight": "900" } }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.formatDateDay(item.date)) +
+                                "\n                        "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "py-1" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.formatDateMonth(item.date)) +
+                                "\n                        "
+                            ),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(item.slots, function (ele) {
+                      return _c(
+                        "button",
+                        {
+                          key: ele.date,
+                          staticClass: "mb-3 btn",
+                          class: {
+                            "btn-primary": ele.status,
+                            "btn-danger": !ele.status,
+                          },
+                          style: !ele.status
+                            ? "cursor: not-allowed;"
+                            : "cursor: pointer;",
+                          on: {
+                            click: function ($event) {
+                              return _vm.selectDate(ele)
+                            },
+                          },
+                        },
+                        [
+                          _vm._v(
+                            "\n                    " +
+                              _vm._s(_vm.formatTime(ele.date)) +
+                              "\n                "
+                          ),
+                        ]
+                      )
+                    }),
+                  ],
+                  2
+                )
+              }),
+              0
+            ),
+          ]
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    this.displayValue.display
+      ? _c(
+          "div",
+          {
+            staticClass: "d-flex py-3 mostly-customized-scrollbar",
+            staticStyle: { "justify-content": "center" },
           },
           _vm._l(_vm.meetingsDays, function (item) {
             return _c(
@@ -28692,10 +28916,7 @@ var render = function () {
               {
                 key: item.id,
                 staticClass: "d-flex mx-3",
-                staticStyle: {
-                  "flex-direction": "column",
-                  "min-width": "120px",
-                },
+                staticStyle: { "flex-direction": "column", width: "100%" },
               },
               [
                 _c("div", { staticClass: "py-1" }, [
@@ -28711,59 +28932,70 @@ var render = function () {
                     [
                       _c("h5", { staticStyle: { "font-weight": "900" } }, [
                         _vm._v(
-                          "\n                            " +
+                          "\n                        " +
                             _vm._s(_vm.formatDateDay(item.date)) +
-                            "\n                        "
+                            "\n                    "
                         ),
                       ]),
                       _vm._v(" "),
                       _c("span", { staticClass: "py-1" }, [
                         _vm._v(
-                          "\n                            " +
+                          "\n                        " +
                             _vm._s(_vm.formatDateMonth(item.date)) +
-                            "\n                        "
+                            "\n                    "
                         ),
                       ]),
                     ]
                   ),
                 ]),
                 _vm._v(" "),
-                _vm._l(item.slots, function (ele) {
-                  return _c(
-                    "button",
-                    {
-                      key: ele.date,
-                      staticClass: "mb-3 btn",
-                      class: {
-                        "btn-primary": ele.status,
-                        "btn-danger": !ele.status,
-                      },
-                      style: !ele.status
-                        ? "cursor: not-allowed;"
-                        : "cursor: pointer;",
-                      on: {
-                        click: function ($event) {
-                          return _vm.selectDate(ele)
+                _c(
+                  "div",
+                  {
+                    staticClass: "d-flex",
+                    staticStyle: {
+                      "flex-direction": "column",
+                      "flex-wrap": "wrap",
+                      "max-height": "50vh",
+                      "overflow-x": "auto",
+                    },
+                  },
+                  _vm._l(item.slots, function (ele) {
+                    return _c(
+                      "button",
+                      {
+                        key: ele.date,
+                        staticClass: "m-3 btn",
+                        class: {
+                          "btn-primary": ele.status,
+                          "btn-danger": !ele.status,
+                        },
+                        style: !ele.status
+                          ? "cursor: not-allowed;"
+                          : "cursor: pointer;",
+                        on: {
+                          click: function ($event) {
+                            return _vm.selectDate(ele)
+                          },
                         },
                       },
-                    },
-                    [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.formatTime(ele.date)) +
-                          "\n                "
-                      ),
-                    ]
-                  )
-                }),
-              ],
-              2
+                      [
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(_vm.formatTime(ele.date)) +
+                            "\n                "
+                        ),
+                      ]
+                    )
+                  }),
+                  0
+                ),
+              ]
             )
           }),
           0
-        ),
-      ]
-    ),
+        )
+      : _vm._e(),
     _vm._v(" "),
     _c("input", {
       attrs: { type: "hidden", name: "meeting" },

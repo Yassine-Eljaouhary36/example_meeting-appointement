@@ -31,8 +31,7 @@
                   <input type="text" class="form-control" name="email" value="{{ old('email') }}" >
                </div>
             </div>
-            
-            <meetings-manager :meetings="{{json_encode($meetings)}}"></meetings-manager>
+            <meetings-manager :meetings="{{json_encode($meetings)}}" :hours="{{json_encode($hour)}}" :minutes="{{json_encode($minute)}}"></meetings-manager>
             <div class="d-grid gap-1 col-6 mx-auto mt-2">
                <button type="submit" class="btn btn-outline-dark" onclick="submit()">
                   <strong>submit</strong>

@@ -1,14 +1,26 @@
 <template>
     <div id="app">
         <div class="d-flex py-2" style="justify-content:space-between ;">
-            <button type="button" class="btn btn-outline-primary px-5"
+            <button type="button" class="btn btn-dark px-4"
             @click="previousDate"
             > <i class="fa-solid fa-angle-left" style="font-size:20px;font-weight:bold ;"></i></button>
-            <button type="button" class="btn btn-outline-primary px-5"
+            <div class="d-flex">
+                <div class="d-flex">
+                    <div class="d-flex mx-1 " style="align-items:center ;">
+                        <div class="px-2 ">Day</div>
+                        <input type="radio" name="displayValue" @click="setDisplayValue(true)">
+                    </div>
+                    <div class="d-flex mx-1 " style="align-items:center ;">
+                        <div class="px-2 ">Week</div>
+                        <input type="radio" name="displayValue" @click="setDisplayValue(false)">
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-dark px-4"
             @click="nextDate"
             > <i class="fa-solid fa-angle-right" style="font-size:20px;font-weight:bold ;"></i></button>
         </div>
-        <div class="d-flex py-3" style="justify-content:center;">
+        <div class="d-flex py-3" style="justify-content:center;" v-if="!this.displayValue.display">
             <div class="d-flex mostly-customized-scrollbar" style="max-height:50vh ;overflow-y:auto ; overflow-x: auto;">
                 <div class="d-flex mx-3" style="flex-direction: column; min-width:120px;" v-for="item in meetingsDays" :key="item.id">
                     <div class="py-1">
@@ -34,6 +46,32 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex py-3 mostly-customized-scrollbar" style="justify-content:center;" v-if="this.displayValue.display">
+            <div class="d-flex mx-3" style="flex-direction: column; width: 100%;" v-for="item in meetingsDays" :key="item.id">
+                <div class="py-1">
+                    <div class="d-flex" style="flex-direction:column ; align-items:center ;">
+                        <h5 style="font-weight:900;">
+                            {{formatDateDay(item.date)}}
+                        </h5>
+                        <span class="py-1">
+                            {{formatDateMonth(item.date)}}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex" style="flex-direction:column; flex-wrap: wrap;max-height:50vh;overflow-x: auto;">
+                    <button class="m-3 btn" v-for="ele in item.slots" :key="ele.date" 
+                        :style="!ele.status ? 'cursor: not-allowed;' : 'cursor: pointer;' "
+                        :class="{
+                        'btn-primary': ele.status,
+                        'btn-danger': !ele.status,
+                        }"
+                        @click="selectDate(ele)"
+                        >
+                        {{ formatTime(ele.date) }}
+                    </button>   
+                </div>
+            </div>
+        </div>
         <input type="hidden" name="meeting" :value="meeting.date">
     </div>
 </template>
@@ -43,19 +81,45 @@ export default {
   name: "App",
     props: {
         meetings:Array,
+        hours:String,
+        minutes:String
     },
     data() {
         return {
             date: new Date(),
             meetingsDays: [],
             meeting: {},
+            displayValue: {
+                display:true,
+                loopValue : 1,
+                previousValue:2
+            }
         };
     },
     methods: {
+    verifyDate(){
+        return false
+    },
+    async setDisplayValue(value){
+        if(value){
+           this.displayValue = {
+                display:true,
+                loopValue : 1,
+                previousValue:2
+            } 
+        }else{
+            this.displayValue = {
+                display:false,
+                loopValue : 7,
+                previousValue:14
+            } 
+        }
+        this.meetingsDays = await this.getMeetings(this.date);
+    },
     getMeetings(date) {
         var week= new Array(); 
         date.setDate(date.getDate() );
-        for (var i = 0; i < 7; i++) {
+        for (var i = 0; i < this.displayValue.loopValue; i++) {
             week.push(
                 {
                     "date":new Date(date).toJSON(),
@@ -71,12 +135,20 @@ export default {
             Datetime.setSeconds(0);
             Datetime.setMilliseconds(0);
             var minutesToAdd=60;
-            for (let index = 0; index < 10; index++) {
+            var dTime = new Date()
+            dTime.setHours(this.hours);
+            dTime.setMinutes(this.minutes);
+            if(this.hours <=23 && this.minutes <59){
+                var CounterTime = (((dTime.getHours()-8)*60)/30)+parseInt(dTime.getMinutes()/30)+1
+            }else{
+                var CounterTime = 0
+            }
+            for (let index = 0; index < CounterTime; index++) {
                 element.slots.push({
                     "date":  Datetime,
                     "status":true 
                 })
-                Datetime = new Date(Datetime.getTime() + minutesToAdd*60*1000)
+                Datetime = new Date(Datetime.getTime() + minutesToAdd*30*1000)
             }
         });
 
@@ -91,35 +163,33 @@ export default {
                 this.meetings.forEach(item=>{
                     var d2 = new Date(item.DateMeeting);
                     if(d1.getTime() === d2.getTime()){
-                        // event.date = ""
                         event.status = false
                     }
                 })
-                if( d1.getTime()<d3.getTime()){
-                    // event.date = ""
-                    event.status = false
-                }
             })
         });
         return week;
     },
     // don't know what to do here <-------------------------
     async nextDate() {
-        this.loading = true;
         const date = new Date(this.date);
         date.setDate(date.getDate() );
         this.meetingsDays = await this.getMeetings(date);
         this.date = date;
-        this.loading = false;
     },
     // don't know what to do here <-------------------------
     async previousDate() {
-        this.loading = true;
         const date = new Date(this.date);
-        date.setDate(date.getDate() - 14);
-        this.meetingsDays = await this.getMeetings(date);
-        this.date = date;
-        this.loading = false;
+        var d3 = new Date()
+        d3.setHours(date.getHours());
+        d3.setMinutes(date.getMinutes());
+        d3.setSeconds(date.getSeconds());
+        d3.setMilliseconds(date.getMilliseconds());
+        date.setDate(date.getDate() - this.displayValue.previousValue);
+        if(date.getTime()>=d3.getTime()){
+            this.meetingsDays = await this.getMeetings(date);
+            this.date = date;    
+        }
     },
     formatTime(DateTime){
         var min = DateTime.getMinutes();
@@ -147,10 +217,7 @@ export default {
     }
   },
   async created() {
-    this.loading = true;
     this.meetingsDays = await this.getMeetings(this.date);
-    this.loading = false;
-    
   },
 };
 </script>

@@ -15,7 +15,9 @@ class MeetingController extends Controller
     public function index()
     {
        $meetings =  Meeting::get();
-        return view('meetings',compact('meetings'));
+       $hour = config('meetConfig.DateTimeValue.Hour');
+       $minute = config('meetConfig.DateTimeValue.Minute');
+        return view('meetings',compact('meetings','hour','minute'));
     }
     /**
      * Show the form for creating a new resource.
