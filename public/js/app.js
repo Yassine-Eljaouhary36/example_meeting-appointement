@@ -5668,7 +5668,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     selectDate: function selectDate(data) {
       if (data.status) {
-        this.meeting = data;
+        this.meeting = {
+          date: new Date(data.date).toISOString(),
+          status: data.status
+        };
       } else {
         this.meeting = {};
       }
@@ -28993,7 +28996,7 @@ var render = function () {
                         _vm._v(
                           "\n                    " +
                             _vm._s(_vm.formatTime(ele.date)) +
-                            "\n                "
+                            "hh\n                "
                         ),
                       ]
                     )

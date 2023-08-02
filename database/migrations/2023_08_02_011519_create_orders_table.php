@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('meetings', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('ref')->nullable();
-            $table->string('DateMeeting');
+            $table->double('total');
             $table->string('status')->nullable();
             $table->foreignId('client_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meetings');
+        Schema::dropIfExists('orders');
     }
 };

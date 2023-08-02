@@ -9,7 +9,7 @@
    @if ($errors->any())
    <div class="alert alert-danger">	
       @foreach ($errors->all() as $error)
-         <strong>-</strong>{{ $error }}<br>
+         <b>-</b> {{ $error }}<br>
       @endforeach
    </div>
    @endif
@@ -17,20 +17,6 @@
       <div class="card-body p-4">
          <form action="{{route('store')}}" method="post" onsubmit="event.preventDefault();">
             @csrf
-            <div class="row align-items-center mb-4">
-               <div class="col-12">
-                  <label class="form-label">First Name</label>
-                  <input type="text" class="form-control" name="FirstName" value="{{ old('FirstName') }}" >
-               </div>
-               <div class="col-12">
-                  <label class="form-label">Last Name</label>
-                  <input type="text" class="form-control" name="LastName" value="{{ old('LastName') }}" >
-               </div>
-               <div class="col-12">
-                  <label class="form-label">Email address</label>
-                  <input type="text" class="form-control" name="email" value="{{ old('email') }}" >
-               </div>
-            </div>
             <meetings-manager :meetings="{{json_encode($meetings)}}" :hours="{{json_encode($hour)}}" :minutes="{{json_encode($minute)}}"></meetings-manager>
             <div class="d-grid gap-1 col-6 mx-auto mt-2">
                <button type="submit" class="btn btn-outline-dark" onclick="submit()">

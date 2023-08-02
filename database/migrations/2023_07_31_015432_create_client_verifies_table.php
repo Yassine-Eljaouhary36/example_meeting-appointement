@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('meetings', function (Blueprint $table) {
+        Schema::create('clients_verify', function (Blueprint $table) {
             $table->id();
-            $table->string('ref')->nullable();
-            $table->string('DateMeeting');
-            $table->string('status')->nullable();
-            $table->foreignId('client_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('client_id');
+            $table->string('token');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meetings');
+        Schema::dropIfExists('clients_verify');
     }
 };

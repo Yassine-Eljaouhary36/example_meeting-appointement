@@ -213,7 +213,7 @@ export default {
     },
     selectDate(data){
         if(data.status){
-            this.meeting =data   
+            this.meeting ={date:new Date(data.date ).toISOString(),status:data.status}     
         }else{
             this.meeting ={} 
         }

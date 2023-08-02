@@ -7,9 +7,11 @@
     <meta name="csrf-token" value="{{ csrf_token() }}" />
     <title>Vue JS Meeting Appointement</title>
     <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>
 <body>
     <div id="app">
+        @include('layouts.navbar')
         @yield('content')
     </div>
     <script src="{{ asset('js/app.js') }}" type="text/javascript"></script>
